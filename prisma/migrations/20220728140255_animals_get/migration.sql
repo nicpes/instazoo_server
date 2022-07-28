@@ -1,4 +1,14 @@
 -- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Animals" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -43,12 +53,14 @@ CREATE TABLE "habitatType" (
 
 -- CreateTable
 CREATE TABLE "userAnimals" (
-    "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "animalId" INTEGER NOT NULL,
 
-    CONSTRAINT "userAnimals_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "userAnimals_pkey" PRIMARY KEY ("userId","animalId")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "Diet" ADD CONSTRAINT "Diet_animalId_fkey" FOREIGN KEY ("animalId") REFERENCES "Animals"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
