@@ -74,10 +74,11 @@ router.patch(
   validate({ body: animalDTO }),
   async (req, res, next) => {
     try {
+      const animalData: AnimalData = req.body;
       const { id } = req.params;
       const animal = await prisma.animals.update({
         where: { id: Number(id) },
-        data: req.body,
+        data: animalData,
       });
 
       res.status(201).json(`Correctly updated Animal ID: ${animal.id}`);
