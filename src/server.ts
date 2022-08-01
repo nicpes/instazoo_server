@@ -4,6 +4,14 @@ import animals from "./routes/animals";
 
 dotenv.config();
 
+import {
+  validate,
+  AnimalData,
+  DietTypeData,
+  AnimalTypeData,
+  HabitatTypeData,
+} from "./lib/validation";
+
 const app: Express = express();
 const port = process.env.PORT;
 
