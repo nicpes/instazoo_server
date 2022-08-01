@@ -4,6 +4,14 @@ import { PrismaClient } from "@prisma/client";
 
 dotenv.config();
 
+import {
+  validate,
+  AnimalData,
+  DietTypeData,
+  AnimalTypeData,
+  HabitatTypeData,
+} from "./lib/validation";
+
 const app: Express = express();
 const port = process.env.PORT;
 const prisma = new PrismaClient();
@@ -28,7 +36,7 @@ app.get("/animals/:id(\\d+)", async (request, response, next) => {
   response.json(animal);
 });
 
-app.post("/animals", async (request, response) => {
+app.post("/animals", validate({ body: {} }), async (request, response) => {
   const animalData = request.body;
   const animal = await prisma.animals.create({
     data: animalData,
