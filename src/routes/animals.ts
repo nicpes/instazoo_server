@@ -1,6 +1,14 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 
+import {
+  validate,
+  animalDTO,
+  AnimalData,
+  AnimalTypeData,
+} from "../lib/validation";
+import { appendFile } from "fs";
+
 const prisma = new PrismaClient();
 const router: Router = Router();
 
@@ -9,7 +17,7 @@ const router: Router = Router();
 // GET ALL ANIMALS
 router.get("/all", async (req, res, next) => {
   try {
-    const animals = await prisma.animals.findMany();
+    const animals: AnimalData = req.body;
 
     res.json(animals);
   } catch (error) {
@@ -42,7 +50,7 @@ router.get("/:id(\\d+)", async (req, res, next) => {
 //#region POST ANIMALS
 
 // POST ANIMALS BY ID
-router.post("/", async (req, res, next) => {
+router.post("/", validate({ body: animalDTO }), async (req, res, next) => {
   try {
     const animalData = req.body;
     const animal = await prisma.animals.create({
@@ -61,20 +69,24 @@ router.post("/", async (req, res, next) => {
 //#region PATCH ANIMALS
 
 // PATCH ANIMALS BY ID
-router.patch("/:id(\\d+)", async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const animal = await prisma.animals.update({
-      where: { id: Number(id) },
-      data: req.body,
-    });
+router.patch(
+  "/:id(\\d+)",
+  validate({ body: animalDTO }),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const animal = await prisma.animals.update({
+        where: { id: Number(id) },
+        data: req.body,
+      });
 
-    res.status(201).json(`Correctly updated Animal ID: ${animal.id}`);
-  } catch (error) {
-    res.status(400).json(error);
-    return next(error);
+      res.status(201).json(`Correctly updated Animal ID: ${animal.id}`);
+    } catch (error) {
+      res.status(400).json(error);
+      return next(error);
+    }
   }
-});
+);
 
 //#endregion
 

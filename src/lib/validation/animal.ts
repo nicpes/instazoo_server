@@ -21,9 +21,9 @@ export const animalDTO = Type.Object(
     lifespan: Type.Integer(),
     geoRange: Type.String(),
     imageLink: Type.String(),
-    diet: Type.Optional(Type.Array(DietDTO)),
-    animalType: Type.Optional(Type.Array(AnimalTypeDTO)),
-    habitatType: Type.Optional(Type.Array(HabitatTypeDTO)),
+    diet: Type.Optional(Type.String(DietDTO) || Type.Undefined()),
+    animalType: Type.Optional(Type.String(AnimalTypeDTO) || Type.Undefined()),
+    habitatType: Type.Optional(Type.String(HabitatTypeDTO) || Type.Undefined()),
   },
   { additionalProperties: false }
 );
