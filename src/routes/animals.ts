@@ -1,13 +1,7 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 
-import {
-  validate,
-  animalDTO,
-  AnimalData,
-  AnimalTypeData,
-} from "../lib/validation";
-import { appendFile } from "fs";
+import { validate, animalDTO, AnimalData } from "../lib/validation";
 
 const prisma = new PrismaClient();
 const router: Router = Router();
@@ -17,7 +11,7 @@ const router: Router = Router();
 // GET ALL ANIMALS
 router.get("/all", async (req, res, next) => {
   try {
-    const animals: AnimalData = req.body;
+    const animals = await prisma.animals.findMany({});
 
     res.json(animals);
   } catch (error) {
@@ -52,12 +46,12 @@ router.get("/:id(\\d+)", async (req, res, next) => {
 // POST ANIMALS BY ID
 router.post("/", validate({ body: animalDTO }), async (req, res, next) => {
   try {
-    const animalData = req.body;
+    const animalData: AnimalData = req.body;
     const animal = await prisma.animals.create({
       data: animalData,
     });
 
-    res.status(201).json(`Correctly added animal ID: ${animal}`);
+    res.status(201).json(`Correctly added animal ID: ${animal.id}`);
   } catch (error) {
     res.status(400).json(error);
     return next(error);
@@ -111,7 +105,5 @@ router.delete("/:id(\\d)", async (req, res, next) => {
 });
 
 //#endregion
-
-router.patch("/");
 
 export default router;
