@@ -17,7 +17,7 @@ const router: Router = Router();
 // GET ALL ANIMALS
 router.get("/all", async (req, res, next) => {
   try {
-    const animals: AnimalData = req.body;
+    const animals = await prisma.animals.findMany({});
 
     res.json(animals);
   } catch (error) {
