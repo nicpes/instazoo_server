@@ -18,4 +18,21 @@ export const animalDTO = Type.Object(
   { additionalProperties: false }
 );
 
+export const userDTO = Type.Object(
+  {
+    email: Type.String(),
+    name: Type.String(),
+    password: Type.String()
+  },
+  { additionalProperties: false }
+);
+
+export const userAnimalsDTO = Type.Object({
+    user: Type.Optional(Type.Array(userDTO)),
+    animals: Type.Optional(Type.Array(animalDTO))
+}, {additionalProperties: false})
+
+
 export type AnimalData = Static<typeof animalDTO>;
+export type userData = Static<typeof userDTO>;
+export type userAnimalData = Static<typeof userAnimalsDTO>

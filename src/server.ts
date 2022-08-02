@@ -1,17 +1,13 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import animals from "./routes/animals";
-import { validationErrorMiddleware } from "./lib/validation";
-dotenv.config();
+import "dotenv/config";
 
-const app: Express = express();
-const port = process.env.PORT;
+import config from "./config";
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use("/api/animals", animals);
-app.use(validationErrorMiddleware);
+import app from "./app";
+
+const port = config.PORT;
+
+console.log(config.GITHUB_CLIENT_ID);
 
 app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+  console.log(`[server]: Server is running at http://localhost:${port}`);
 });
