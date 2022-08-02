@@ -1,13 +1,9 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 
-import {
-  validate,
-  animalDTO,
-  AnimalData,
-  AnimalTypeData,
-} from "../lib/validation";
-import { appendFile } from "fs";
+import { validate, animalDTO, AnimalData } from "../lib/middleware/validation";
+
+import { checkAuthorization } from "../lib/middleware/passport";
 
 const prisma = new PrismaClient();
 const router: Router = Router();
@@ -50,19 +46,24 @@ router.get("/:id(\\d+)", async (req, res, next) => {
 //#region POST ANIMALS
 
 // POST ANIMALS BY ID
-router.post("/", validate({ body: animalDTO }), async (req, res, next) => {
-  try {
-    const animalData = req.body;
-    const animal = await prisma.animals.create({
-      data: animalData,
-    });
+router.post(
+  "/",
+  checkAuthorization,
+  validate({ body: animalDTO }),
+  async (req, res, next) => {
+    try {
+      const animalData: AnimalData = req.body;
+      const animal = await prisma.animals.create({
+        data: animalData,
+      });
 
-    res.status(201).json(`Correctly added animal ID: ${animal}`);
-  } catch (error) {
-    res.status(400).json(error);
-    return next(error);
+      res.status(201).json(`Correctly added animal ID: ${animal.id}`);
+    } catch (error) {
+      res.status(400).json(error);
+      return next(error);
+    }
   }
-});
+);
 
 //#endregion
 
@@ -71,6 +72,7 @@ router.post("/", validate({ body: animalDTO }), async (req, res, next) => {
 // PATCH ANIMALS BY ID
 router.patch(
   "/:id(\\d+)",
+  checkAuthorization,
   validate({ body: animalDTO }),
   async (req, res, next) => {
     try {
@@ -94,7 +96,7 @@ router.patch(
 //#region DELETE ANIMALS
 
 // DELETE ANIMALS BY ID
-router.delete("/:id(\\d)", async (req, res, next) => {
+router.delete("/:id(\\d)", checkAuthorization, async (req, res, next) => {
   try {
     const { id } = req.params;
     const animal = await prisma.animals.delete({
@@ -111,7 +113,5 @@ router.delete("/:id(\\d)", async (req, res, next) => {
 });
 
 //#endregion
-
-router.patch("/");
 
 export default router;

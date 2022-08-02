@@ -20,11 +20,10 @@ export const validationErrorMiddleware: ErrorRequestHandler = (
     response.status(422).send({
       errors: error.validationErrors,
     });
-    next()
-  }
-  else{
-    next(error)
+    next();
+  } else {
+    next(error);
   }
 };
 
-export * from "./animal";
+export * from "./userAnimal";
