@@ -5,10 +5,12 @@ import authRoutes from "./routes/auth";
 import { validationErrorMiddleware } from "./lib/middleware/validation";
 import { initSessionMiddleware } from "./lib/middleware/session";
 import { passport } from "./lib/middleware/passport";
+import { initCorsMiddleware } from "./lib/middleware/cors";
 
 const app: Express = express();
 
 app.use(initSessionMiddleware());
+app.use(initCorsMiddleware());
 app.use(passport.initialize());
 app.use(passport.session());
 
