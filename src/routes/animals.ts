@@ -72,7 +72,7 @@ router.post(
 // PATCH ANIMALS BY ID
 router.patch(
   "/:id(\\d+)",
-  checkAuthorization,
+
   validate({ body: animalDTO }),
   async (req, res, next) => {
     try {

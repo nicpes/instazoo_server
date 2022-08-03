@@ -24,19 +24,19 @@ model Animals {
   id          Int           @id @default(autoincrement())
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  name        String
+  name        String?
   activeTime  String
-  lenghtMin   Int
-  lenghtMax   Int
+  lenghtMin   Int?
+  lenghtMax   Int?
   weightMin   Int
   weightMax   Int
-  lifespan    Int
+  lifespan    Int?
   geoRange    String
   imageLink   String
   userAnimals userAnimals[]
   diet        String
-  animalType  String
-  habitatType String
+  animalType  String?
+  habitatType String?
 }
 
 model userAnimals {
