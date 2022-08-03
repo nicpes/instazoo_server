@@ -15,18 +15,18 @@ CREATE TABLE "Animals" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" TEXT,
     "activeTime" TEXT NOT NULL,
-    "lenghtMin" INTEGER NOT NULL,
-    "lenghtMax" INTEGER NOT NULL,
+    "lenghtMin" INTEGER,
+    "lenghtMax" INTEGER,
     "weightMin" INTEGER NOT NULL,
     "weightMax" INTEGER NOT NULL,
     "lifespan" INTEGER NOT NULL,
     "geoRange" TEXT NOT NULL,
     "imageLink" TEXT NOT NULL,
     "diet" TEXT NOT NULL,
-    "animalType" TEXT NOT NULL,
-    "habitatType" TEXT NOT NULL,
+    "animalType" TEXT,
+    "habitatType" TEXT,
 
     CONSTRAINT "Animals_pkey" PRIMARY KEY ("id")
 );
