@@ -1,7 +1,7 @@
 import passport from "passport";
 import passportGithub2 from "passport-github2";
 import config from "../../config";
-import { RequestHandler, response } from "express";
+import { RequestHandler } from "express";
 
 const githubStrategy = new passportGithub2.Strategy(
   {
@@ -9,12 +9,12 @@ const githubStrategy = new passportGithub2.Strategy(
     clientSecret: config.GITHUB_CLIENT_SECRET,
     callbackURL: config.GITHUB_CALLBACK_URL,
   },
-  (
+  function (
     accessToken: string,
     refreshToken: string,
     profile: { [key: string]: string },
     done: (error: null, user: Express.User) => void
-  ) => {
+  ) {
     const user: Express.User = {
       username: profile.username,
     };
@@ -34,7 +34,7 @@ const checkAuthorization: RequestHandler = (req, res, next) => {
     return next();
   }
 
-  response.status(401).end();
+  res.status(401).end();
 };
 
 export { passport, checkAuthorization };

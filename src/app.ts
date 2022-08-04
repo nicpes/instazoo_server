@@ -10,9 +10,10 @@ import { initCorsMiddleware } from "./lib/middleware/cors";
 const app: Express = express();
 
 app.use(initSessionMiddleware());
-app.use(initCorsMiddleware());
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(initCorsMiddleware());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
